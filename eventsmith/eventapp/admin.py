@@ -1,8 +1,20 @@
 
 from django.contrib import admin
 
-from .models import RSVP, Event
+
+
 
 # Register your models here.
-admin.site.register(Event)
-admin.site.register(RSVP)
+
+from .models import contactEnquiry
+from .models import Event
+
+@admin.register(contactEnquiry)
+class contactEnquiryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'date', 'time', 'location')
+    search_fields = ('name', 'location')
+
+@admin.register(Event)
+class EventAdmin(admin.ModelAdmin):
+    list_display = ('name', 'start_date', 'price')
+    search_fields = ('name',)

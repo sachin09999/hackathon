@@ -69,6 +69,10 @@ var swiper = new Swiper(".review-slider", {
   },
 });
 
-document.getElementById('invitationCard').addEventListener('click', function() {
-  window.location.href = 'event_list/';
+document.getElementById("invitationCard").addEventListener("click", function() {
+  window.location.href = "/saveenquiry/";
+});
+
+document.getElementById("invitationCard").addEventListener("click", function() {
+  window.location.href = "/saveenquiry/";
 });

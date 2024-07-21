@@ -1,7 +1,10 @@
 from django import forms
-from .models import RSVP
 
-class RSVPForm(forms.ModelForm):
+from .models import contactEnquiry
+
+class contactEnquiryForm(forms.ModelForm):
     class Meta:
-        model = RSVP
-        fields = ['name', 'email', 'tickets']
+        model = contactEnquiry
+        fields = ['name', 'description', 'date', 'time', 'location', 'photo']
+
+       

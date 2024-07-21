@@ -1,22 +1,27 @@
 from django.db import models
 
 # Create your models here.
-from django.db import models
 
-class Event(models.Model):
-    title = models.CharField(max_length=200)
+class contactEnquiry(models.Model):
+    name = models.CharField(max_length=200)
     description = models.TextField()
-    date = models.DateTimeField()
-    location = models.CharField(max_length=200)
+    date = models.DateField()
+    time = models.TimeField()
+    location = models.CharField(max_length=300)
+    photo = models.ImageField(upload_to='static/contact_enquiry_photos/')
 
     def __str__(self):
-        return self.title
-
-class RSVP(models.Model):
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
-    email = models.EmailField()
-    tickets = models.PositiveIntegerField()
+        return self.name
+    
+class Event(models.Model):
+    name = models.CharField(max_length=200)
+    start_date = models.DateTimeField()
+    photo = models.ImageField(upload_to='event_photos/')
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    url = models.URLField()
 
     def __str__(self):
-        return f'{self.name} - {self.event.title}'
+        return self.name
+
+    
+   
