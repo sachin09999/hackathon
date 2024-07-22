@@ -76,3 +76,29 @@ document.getElementById("invitationCard").addEventListener("click", function() {
 document.getElementById("invitationCard").addEventListener("click", function() {
   window.location.href = "/saveenquiry/";
 });
+
+function filterEvents(category) {
+  fetch(`/events/?category=${category}`)
+      .then(response => response.json())
+      .then(data => {
+          const eventContainer = document.getElementById('events');
+          eventContainer.innerHTML = '';
+          if (data.events.length === 0) {
+              eventContainer.innerHTML = '<p>No events found</p>';
+          } else {
+              data.events.forEach(event => {
+                  const eventDiv = document.createElement('div');
+                  eventDiv.innerHTML = `<h3>${event.name}</h3><p>${event.description}</p>`;
+                  eventContainer.appendChild(eventDiv);
+              });
+          }
+      })
+      .catch(error => {
+          console.error('Error fetching events:', error);
+          const eventContainer = document.getElementById('events');
+          eventContainer.innerHTML = '<p>Error fetching events</p>';
+      });
+}
+function redirectToCurrentPage() {
+  window.location.href = window.location.href;
+}

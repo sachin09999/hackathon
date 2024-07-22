@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat Room</title>
+    <style>
+        /* Add your styling here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ece5dd;
+            margin: 0;
+            padding: 0;
+        }
+
+        #chat-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background: #ffffff;
+        }
+
+        #chat-log {
+            flex: 1;
+            overflow-y: scroll;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message {
+            display: flex;
+            align-items: flex-end;
+            max-width: 80%;
+        }
+
+        .client-message {
+            background-color: #dcf8c6;
+            align-self: flex-end;
+            border-radius: 10px;
+            padding: 10px;
+            position: relative;
+            margin-bottom: 10px;
+            text-align: right;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .client-message::after {
+            content: '';
+            position: absolute;
+            right: -10px;
+            bottom: 0;
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid #dcf8c6;
+            border-left: 10px solid #dcf8c6;
+        }
+
+        .admin-message {
+            background-color: #ffffff;
+            align-self: flex-start;
+            border-radius: 10px;
+            padding: 10px;
+            position: relative;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .admin-message::after {
+            content: '';
+            position: absolute;
+            left: -10px;
+            bottom: 0;
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid #ffffff;
+            border-right: 10px solid #ffffff;
+        }
+
+        .message-timestamp {
+            font-size: 0.8em;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        #message-input-container {
+            display: flex;
+            padding: 10px;
+            background-color: #ffffff;
+            border-top: 1px solid #ddd;
+        }
+
+        #message-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+        }
+
+        #send-button {
+            margin-left: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background-color: #007bff;
+            color: #ffffff;
+            cursor: pointer;
+        }
+
+        #send-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    <script>
+        // Enable Pusher logging - don't include this in production
+        Pusher.logToConsole = true;
+
+        var pusher = new Pusher('d6935e17c8a8ab9a4d4d', {
+            cluster: 'ap2'
+        });
+
+        var roomName = '{{ room_name }}'; // Room name from Django context
+        var channel = pusher.subscribe('chat_' + roomName);
+
+        // Bind to the 'message' event
+        channel.bind('message', function(data) {
+            var chatLog = document.querySelector('#chat-log');
+            var messageDiv = document.createElement('div');
+            messageDiv.className = 'message ' + (data.sender === 'admin' ? 'admin-message' : 'client-message');
+            messageDiv.innerHTML = '<div>' + data.message + '</div><div class="message-timestamp">' + new Date().toLocaleTimeString() + '</div>';
+            chatLog.appendChild(messageDiv);
+            chatLog.scrollTop = chatLog.scrollHeight; // Auto-scroll to the bottom
+        });
+
+        function sendMessage(sender) {
+            var message = document.querySelector('#message-input').value;
+            fetch('/send_message/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    message: message,
+                    room: roomName,
+                    sender: sender
+                })
+            }).then(response => response.json()).then(data => {
+                console.log(data);
+                document.querySelector('#message-input').value = ''; // Clear the input field
+            });
+        }
+
+        // Send message on Enter key press
+        document.querySelector('#message-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage('client');
+            }
+        });
+    </script>
+</head>
+<body>
+    <div id="chat-container">
+        <div id="chat-log"></div>
+        <div id="message-input-container">
+            <input id="message-input" type="text" placeholder="Type a message">
+            <button id="send-button" onclick="sendMessage('client')">Send</button>
+        </div>
+    </div>
+</body>
+</html>

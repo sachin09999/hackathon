@@ -39,8 +39,17 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'eventapp',
+    'channels',
 ]
-
+ASGI_APPLICATION = 'eventsmith.asgi.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('127.0.0.1',6380)],  # Adjust Redis configuration if necessary
+        },
+    },
+}
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -81,7 +90,10 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
+PUSHER_APP_ID = '1837894'
+PUSHER_KEY = 'd6935e17c8a8ab9a4d4d'
+PUSHER_SECRET = 'e0edbaafced90c7b641d'
+PUSHER_CLUSTER = 'ap2'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

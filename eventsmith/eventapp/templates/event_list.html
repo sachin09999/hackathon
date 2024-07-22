@@ -3,10 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Browse Events</title>
-    <link rel="stylesheet" href="/static/event.css">
+    <link rel="stylesheet" href="/static/event_list.css" />
 </head>
 <body>
+    <div class="topnav">
+        <!--<a class="active" href="#home">Home</a>-->
+        <a class="active" href="{% url 'event_list' %}">Home</a>
+        <a href="#news">News</a>
+        <a href="#contact">Contact</a>
+        <a href="#about">About</a>
+      </div>
+      <div class="col-12">
+        <form method="get">
+            <input type="text" name="event" value="" />
+            <input type="submit" value="Search" />
+        </form>
+      </div>
     <h1>Browse Events</h1>
+    <div>
+        <button class="category-button" onclick="filterEvents('comedy')">Comedy Shows</button>
+        <button class="category-button" onclick="filterEvents('workshops')">Workshops</button>
+        <button class="category-button" onclick="filterEvents('meetups')">Meetups</button>
+        <button class="category-button" onclick="filterEvents('music')">Music Shows</button>
+        <button class="category-button" onclick="filterEvents('kids')">Kids</button>
+        <button class="category-button" onclick="filterEvents('exhibitions')">Exhibitions</button>
+        <button class="category-button" onclick="filterEvents('performances')">Performances</button>
+    </div>
+
+    <div id="events">
     <div class="event-cards">
         {% if events %}
             {% for event in events %}
@@ -24,5 +48,6 @@
             <p>No events found.</p>
         {% endif %}
     </div>
+    <script src="/static/app.js"></script>
 </body>
 </html>
