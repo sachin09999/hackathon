@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Browse Events</title>
     <link rel="stylesheet" href="/static/event_list.css" />
 </head>
+
 <body>
     <div class="topnav">
         <!--<a class="active" href="#home">Home</a>-->
         <a class="active" href="{% url 'event_list' %}">Home</a>
+        <a href="{% url 'create_event' %}">Create Event</a> <!-- New button for Create Event -->
         <a href="#news">News</a>
         <a href="#contact">Contact</a>
         <a href="#about">About</a>
-      </div>
-      <div class="col-12">
+    </div>
+    <div class="col-12">
         <form method="get">
             <input type="text" name="event" value="" />
             <input type="submit" value="Search" />
         </form>
-      </div>
+    </div>
     <h1>Browse Events</h1>
     <div>
         <button class="category-button" onclick="filterEvents('comedy')">Comedy Shows</button>
@@ -31,23 +34,31 @@
     </div>
 
     <div id="events">
-    <div class="event-cards">
-        {% if events %}
-            {% for event in events %}
-                <div class="card">
-                    <img src="{{ event.photo.url }}" alt="{{ event.name }}" class="event-image">
-                    <div class="card-content">
-                        <h2>{{ event.name }}</h2>
-                        <p>{{ event.start_date }}</p>
-                        <p>{{ event.price|floatformat:2 }}</p>
-                        <a href="{{ event.url }}" class="btn" target="_blank">Join</a>
+        <div class="event-cards">
+            {% if events %}
+                {% for event in events %}
+                    <div class="card">
+                        {% if event.photo %}
+                            <img src="{{ event.photo.url }}" alt="{{ event.name }}" class="event-image">
+                        {% else %}
+                            <img src="/static/default_image.jpg" alt="Default Image" class="event-image">
+                        {% endif %}
+                        <div class="card-content">
+                            <h2>{{ event.name }}</h2>
+                            <p>{{ event.start_date }}</p>
+                            <p>{{ event.price|floatformat:2 }}</p>
+                            <a href="{{ event.url }}" class="btn" target="_blank">Join</a>
+                        </div>
                     </div>
-                </div>
-            {% endfor %}
-        {% else %}
-            <p>No events found.</p>
-        {% endif %}
+                {% endfor %}
+            {% else %}
+                <p>No events found.</p>
+            {% endif %}
+        </div>
     </div>
+
     <script src="/static/app.js"></script>
+    <script src="//code.tidio.co/oh24uevcpvrzvcuy5eacbhxbnjjxlad3.js" async></script>
 </body>
+
 </html>

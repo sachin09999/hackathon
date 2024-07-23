@@ -13,6 +13,7 @@ urlpatterns = [
     path('chat/<str:room_name>/', views.chat_room, name='chat_room'),
     path('send_message/', views.send_message, name='send_message'),
     path('admin_chat/', admin_chat, name='admin_chat'),
+    path('create/', views.create_event, name='create_event')
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

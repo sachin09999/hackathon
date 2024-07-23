@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from eventapp.models import contactEnquiry
+from django.contrib.auth.decorators import login_required
+from eventapp.models import Event
 from .models import Event
 from django.http import JsonResponse
 import pusher
@@ -8,19 +9,24 @@ from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from .models import ChatMessage
 
+
 # Create your views here.
 
+@login_required
 def home(request):
-    return render(request,"home.html")
+    return render(request, 'home.html')
+
 
 def saveEnquiry(request):
     if request.method=='POST':
         name=request.POST.get('name')
+        start_date=request.POST.get('start_date')
         description=request.POST.get('description')
-        date=request.POST.get('date')
-        time=request.POST.get('time')
         photo=request.POST.get('photo')
-        en=contactEnquiry(name=name,description=description,date=date,time=time,photo=photo)
+        category=request.POST.get('category')
+        location=request.POST.get('location')
+        price=request.POST.get('price')
+        en=Event(name=name,start_date=start_date,description=description,photo=photo,category=category,location=location,price=price)
         en.save()
 
     return render(request,"createvent.html")
@@ -43,6 +49,11 @@ def event_list(request):
     else:
         events = Event.objects.all()
     return render(request, 'event_list.html', {'events': events})
+
+
+
+
+
 
 def chat_room(request, room_name):
     return render(request, 'chat.html', {'room_name': room_name})
@@ -106,3 +117,6 @@ def admin_reply(request):
 def admin_chat(request):
     room_name = 'room_name'  # Or any logic to get the room name dynamically
     return render(request, 'admin_chat.html', {'room_name': room_name})
+
+def create_event(request):
+    return render(request, 'createvent.html')

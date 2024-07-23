@@ -1,10 +1,10 @@
 from django import forms
 
-from .models import contactEnquiry
+from .models import contactEnquiry,Event
 
-class contactEnquiryForm(forms.ModelForm):
+class Event(forms.ModelForm):
     class Meta:
         model = contactEnquiry
-        fields = ['name', 'description', 'date', 'time', 'location', 'photo']
+        fields = ['name', 'start_date', 'description', 'photo', 'price', 'category', 'location']
 
        

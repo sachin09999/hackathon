@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'eventapp',
     'channels',
+    'accounts',
 ]
 ASGI_APPLICATION = 'eventsmith.asgi.application'
 CHANNEL_LAYERS = {
@@ -80,10 +81,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'eventsmith.wsgi.application'
 
-
+BACKENDLESS_APP_ID = '0560A731-58D6-45B7-8494-7CF52320FBDA'
+BACKENDLESS_REST_API_KEY = 'C3D45E38-3DF7-4E6E-93C5-A9AC7071DF67'
+BACKENDLESS_BASE_URL = 'https://api.backendless.com'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
+LOGIN_URL = 'login'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -130,7 +133,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
-
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'accounts/static'),
+    # Add other directories if necessary
+]
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 

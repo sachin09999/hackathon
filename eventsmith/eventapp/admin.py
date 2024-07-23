@@ -6,18 +6,17 @@ from .views import admin_chat
 
 # Register your models here.
 
-from .models import contactEnquiry
 from .models import Event
 
-@admin.register(contactEnquiry)
-class contactEnquiryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'date', 'time', 'location')
-    search_fields = ('name', 'location')
+# @admin.register(contactEnquiry)
+# class contactEnquiryAdmin(admin.ModelAdmin):
+#     list_display = ('name', 'date', 'time', 'location')
+#     search_fields = ('name', 'location')
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ('name', 'start_date', 'price')
-    search_fields = ('name',)
+    list_display = ('name','start_date','photo','category','location')
+    search_fields = ('name','location')
 
 class ChatMessageAdmin(admin.ModelAdmin):
     list_display = ('room', 'sender', 'message', 'timestamp')
