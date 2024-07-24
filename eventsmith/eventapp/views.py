@@ -1,13 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render , get_object_or_404,redirect
 from django.contrib.auth.decorators import login_required
 from eventapp.models import Event
-from .models import Event
+from .models import Event,UserProfile
 from django.http import JsonResponse
 import pusher
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
-from .models import ChatMessage
+from .models import ChatMessage,Comment
 
 
 # Create your views here.
@@ -120,3 +120,31 @@ def admin_chat(request):
 
 def create_event(request):
     return render(request, 'createvent.html')
+
+@login_required
+def payment_view(request, event_id):
+    event = get_object_or_404(Event, pk=event_id)
+    return render(request, 'payment_page.html', {'event': event})
+
+@login_required
+def process_payment_view(request, event_id):
+    event = get_object_or_404(Event, pk=event_id)
+    user_profile = get_object_or_404(UserProfile, user=request.user)
+
+    if request.method == 'POST':
+        # Mock payment processing logic
+        # Here you would integrate with a real payment gateway
+
+        # After successful payment, associate the event with the user profile
+        user_profile.events.add(event)
+        user_profile.save()
+
+        # Redirect to a success page or event list
+        return redirect('event_list')
+
+    return render(request, 'payment_page.html', {'event': event})
+
+def event_comments(request, event_id):
+    event = get_object_or_404(Event, pk=event_id)
+    comments = Comment.objects.filter(event=event)
+    return render(request, 'comments.html', {'comments': comments})

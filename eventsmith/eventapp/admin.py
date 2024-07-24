@@ -3,6 +3,8 @@ from django.contrib import admin
 from .models import ChatMessage
 from django.urls import path
 from .views import admin_chat
+from .models import UserProfile
+
 
 # Register your models here.
 
@@ -17,6 +19,8 @@ from .models import Event
 class EventAdmin(admin.ModelAdmin):
     list_display = ('name','start_date','photo','category','location')
     search_fields = ('name','location')
+
+ 
 
 class ChatMessageAdmin(admin.ModelAdmin):
     list_display = ('room', 'sender', 'message', 'timestamp')
@@ -36,3 +40,14 @@ class MyAdminSite(admin.AdminSite):
         return custom_urls + urls
 
 admin_site = MyAdminSite(name='myadmin')
+
+
+class UserProfileAdmin(admin.ModelAdmin):
+    list_display = ['user', 'get_events']
+
+    def get_events(self, obj):
+        return ", ".join([event.name for event in obj.events.all()])
+
+    get_events.short_description = 'Events Joined'
+
+admin.site.register(UserProfile, UserProfileAdmin)
