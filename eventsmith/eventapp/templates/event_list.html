@@ -202,22 +202,9 @@
         </div>
     </div>
 
-    <!-- The Modal -->
-    <div id="myModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2 id="modal-event-name"></h2>
-            <img id="modal-event-photo" src="" alt="" class="event-image">
-            <p id="modal-event-start-date"></p>
-            <p id="modal-event-price"></p>
-            <div id="modal-comments">
-                <!-- Comments will be loaded here -->
-            </div>
-            <a id="modal-join-btn" href="#" class="btn" target="_blank">Join</a>
-        </div>
-    </div>
+   
     <section id="ordersitem" class="popup">
-        <img src="/static/images/close.jpg" class="close" />
+     <img src="/static/images/close.jpg" class="close" />
       <div class="content">
         <div class="container wrapper">
             <h1>Create Event</h1>
@@ -231,16 +218,29 @@
                     <textarea id="description" name="description" rows="4" placeholder="Description" required></textarea>
                 </div>
                 <div class="input-box">
-                    <input type="date" id="date" name="date" placeholder="Date" required>
-                </div>
-                <div class="input-box">
-                    <input type="time" id="time" name="time" placeholder="Time" required>
+                    <input type="date" id="start_date" name="start_date" placeholder="Date" required>
                 </div>
                 <div class="input-box">
                     <input type="text" id="location" name="location" placeholder="Location" required>
                 </div>
                 <div class="form-group">
                     <input type="file" id="photo" name="photo" accept="image/*" required>
+                </div>
+                <div class="form-group">
+                    <label for="price">Price:</label>
+                    <input type="number" id="price" name="price" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="category">Category:</label>
+                    <select id="category" name="category" required>
+                        <option value="comedy">Comedy Shows</option>
+                        <option value="workshops">Workshops</option>
+                        <option value="meetups">Meetups</option>
+                        <option value="music">Music Shows</option>
+                        <option value="kids">Kids</option>
+                        <option value="exhibitions">Exhibitions</option>
+                        <option value="performances">Performances</option>
+                    </select>
                 </div>
                     <button type="submit" class="btn">Create Event</button>
               
