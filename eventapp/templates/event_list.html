@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Browse Events</title>
+    <link rel="stylesheet" href="/static/event_list.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+       .popup {
+  background-color: rgba(0, 0, 0, 0.6);
+  width: 100%;
+  height: calc(100% + 50%);
+  position: absolute;
+  top: 0;
+  /* top: 100vh; */
+  left: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  transition: 0.5s;
+}
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 70%;
+  width: 40%;
+  background: url("/static/images/bkimg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-color: #fff;
+  border-radius: 1%;
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 1);
+}
+.close {
+  color: #fff;
+  float: right;
+  height: 50px;
+  width: 50px;
+  cursor: pointer;
+}
+
+.wrapper {
+  height: 700px;
+  width: 600px;
+  background-color: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  color: #fff;
+  border-radius: 10px;
+  padding: 5% 12% 4% 7%;
+}
+.wrapper h1 {
+  font-size: 36px;
+  text-align: center;
+}
+.wrapper .input-box {
+  position: relative;
+  width: 100%;
+  height: 50px;
+  /* background: salmon; */
+  margin: 30px 0;
+}
+.input-box input {
+  width: 100%;
+  /* height: 100%; */
+  background: transparent;
+  border: none;
+  outline: none;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 40px;
+  font-size: 16px;
+  color: #fff;
+  padding: 20px 45px 20px 20px;
+}
+.input-box input::placeholder {
+  color: #fff;
+}
+.wrapper .btn {
+  width: 100%;
+  height: 45px;
+  background: #fff;
+  border: none;
+  outline: none;
+  border-radius: 40px;
+  margin-top: 10%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  color: #333;
+  font-weight: 600;
+}
+.form-group {
+  margin: 0 0 15px 5px;
+}
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  border: none;
+  outline: none;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 40px;
+  font-size: 16px;
+  color: #000000;
+  padding: 10px 45px 10px 20px;
+}
+.form-group textarea {
+  resize: vertical;
+}
+.form-group textarea::placeholder {
+  color: #fff;
+}
+.form-group input[type="file"] {
+  border: none;
+}
+  
+  
+      </style>
+</head>
+
+<body>
+    <div class="bg-black p-4 shadow-md">
+        <div class="flex justify-between items-center">
+            <a href="{% url 'home' %}">
+                <button class="text-white flex items-center">
+                    <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M11.3 1.3a1 1 0 0 1 0 1.4L5.4 8l5.9 5.3a1 1 0 0 1-1.4 1.4l-6.3-5.6a1 1 0 0 1 0-1.4l6.3-5.6a1 1 0 0 1 1.4 0z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    Back
+                </button>
+            </a>
+            <div class="space-x-4 flex items-center">
+                <a href="#ordersitem">
+                    <button class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 btn-61">
+                        Create Event
+                    </button>
+                </a>
+                <!--event join code anchor tag-->
+                    <button class="text-white bg-gray-700 hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2">
+                        My Events
+                    </button>
+                </a>
+            </div>
+            <div class="relative w-full max-w-md ml-4">
+                <form method="get">
+                    <input type="text" name="event" value=""
+                        class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="Search..." required="">
+                    <button type="submit" class="absolute inset-y-0 right-0 flex items-center pr-3">
+                        <svg class="w-5 h-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M11 3a8 8 0 100 16 8 8 0 000-16zm0 0l6 6m-6-6l-6 6"></path>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="flex items-start justify-start h-full p-4">
+        <h2 class="text-4xl font-bold leading-none tracking-tight text-gray-900"
+            style="font-family: 'Frozen', cursive;">Events</h2>
+    </div>
+
+    <div id="events">
+        <div class="event-cards">
+            {% if events %}
+            {% for event in events %}
+            <div class="flex flex-wrap items-center justify-center h-full">
+                <div class="m-4 max-w-sm rounded-lg overflow-hidden shadow-lg bg-white border border-gray-200 hover:shadow-xl transition-shadow duration-300 ease-in-out dark:bg-gray-800 dark:border-gray-700">
+                    {% if event.photo %}
+                        <img src="{{ event.photo.url }}" alt="{{ event.name }}" class="w-full h-48 object-cover">
+                    {% else %}
+                        <img src="/static/default_image.jpg" alt="Default Image" class="w-full h-48 object-cover">
+                    {% endif %}
+                    <div class="p-6">
+                        <h2 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ event.name }}</h2>
+                        <p class="mb-1 text-gray-700 dark:text-gray-400">{{ event.start_date }}</p>
+                        <p class="mb-1 text-gray-700 dark:text-gray-400 flex items-center">
+                            <i class="fas fa-map-marker-alt text-gray-500 mr-2"></i>
+                            {{ event.location }}
+                        </p>
+                        <p class="mb-4 text-lg font-semibold text-gray-900 dark:text-white">${{ event.price|floatformat:2 }}</p>
+                        <a href="{% url 'payment' event.id %}" class="inline-flex items-center justify-center px-4 py-2 text-base font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">Join</a>
+                    </div>
+                </div>
+            </div>
+            
+            
+            {% endfor %}
+            {% else %}
+            <p>No events found.</p>
+            {% endif %}
+        </div>
+    </div>
+
+   
+    <section id="ordersitem" class="popup">
+     <img src="/static/images/close.jpg" class="close" />
+      <div class="content">
+        <div class="container wrapper">
+            <h1>Create Event</h1>
+            <form method="post" action="{% url 'saveenquiry' %}" id="createvent" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="input-box">
+                    <!-- <label for="name">Event Name:</label> -->
+                    <input type="text" id="name" name="name"  placeholder="Event Name" required>
+                </div>
+                <div class="form-group">
+                    <textarea id="description" name="description" rows="4" placeholder="Description" required></textarea>
+                </div>
+                <div class="input-box">
+                    <input type="date" id="start_date" name="start_date" placeholder="Date" required>
+                </div>
+                <div class="input-box">
+                    <input type="text" id="location" name="location" placeholder="Location" required>
+                </div>
+                <div class="form-group">
+                    <input type="file" id="photo" name="photo" accept="image/*" required>
+                </div>
+                <div class="form-group">
+                    <label for="price">Price:</label>
+                    <input type="number" id="price" name="price" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="category">Category:</label>
+                    <select id="category" name="category" required>
+                        <option value="comedy">Comedy Shows</option>
+                        <option value="workshops">Workshops</option>
+                        <option value="meetups">Meetups</option>
+                        <option value="music">Music Shows</option>
+                        <option value="kids">Kids</option>
+                        <option value="exhibitions">Exhibitions</option>
+                        <option value="performances">Performances</option>
+                    </select>
+                </div>
+                    <button type="submit" class="btn">Create Event</button>
+              
+            </form>
+        </div>    
+    </section>
+    <script>
+      document.querySelector(".btn-61").addEventListener("click", () => {
+        document.querySelector(".popup").style.display = "flex";
+      });
+      document.querySelector(".close").addEventListener("click", () => {
+        document.querySelector(".popup").style.display = "none";
+      });
+    </script>
+    <script>
+        $(document).ready(function () {
+            // Get the modal
+            var modal = document.getElementById("myModal");
+
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+
+            // When the user clicks on a card, open the modal 
+            $(".card").click(function () {
+                var eventId = $(this).data("event-id");
+                var eventName = $(this).data("event-name");
+                var eventStartDate = $(this).data("event-start-date");
+                var eventPrice = $(this).data("event-price");
+                var eventPhotoUrl = $(this).data("event-photo-url");
+
+                $("#modal-event-name").text(eventName);
+                $("#modal-event-start-date").text(eventStartDate);
+                $("#modal-event-price").text("$" + eventPrice);
+                $("#modal-event-photo").attr("src", eventPhotoUrl);
+                $("#modal-join-btn").attr("href", "{% url 'payment' 0 %}".replace("0", eventId));
+
+                // Load comments for the event (if you have a comment API endpoint)
+                $.ajax({
+                    url: "/comments/" + eventId + "/",
+                    success: function (data) {
+                        $("#modal-comments").html(data);
+                    }
+                });
+
+                modal.style.display = "block";
+            });
+        });
+    </script>
+
+    <script src="/static/app.js"></script>
+    <script src="//code.tidio.co/oh24uevcpvrzvcuy5eacbhxbnjjxlad3.js" async></script>
+</body>
+
+</html>
