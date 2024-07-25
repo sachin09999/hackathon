@@ -1,1 +1,2 @@
-web: gunicorn eventsmith.wsgi
+web: gunicorn eventsmith.wsgi:application
+
