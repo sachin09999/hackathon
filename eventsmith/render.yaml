@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: eventapp
+    env: python
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    startCommand: gunicorn eventsmith.wsgi:application
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: eventsmith.settings
+      - key: SECRET_KEY
+        value: 3nv$e=7+w9=a8l=-lgc63*$@#)zg=)ej(rb#sw@zew!1axw)^v
+      - key: ALLOWED_HOSTS
+        value: hackathon0009.onrender.com
+routes:
+  - type: static
+    name: static
+    path: /static
+    destination: staticfiles
